@@ -1,0 +1,11 @@
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: PodPreset
+metadata:
+  name: frontend
+spec:
+  env:
+    - name: FOO
+      value: bar
+  selector:
+    matchLabels:
+      role: frontend

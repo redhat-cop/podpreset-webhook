@@ -1,0 +1,30 @@
+sudo: required
+language: go
+go_import_path: github.com/redhat-cop/podpreset-webhook
+go:
+  - "1.12"
+
+env:
+  - GO111MODULE=on
+
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script: make travis-latest-deploy
+    on:
+      repo: redhat-cop/podpreset-webhook
+      branch: master
+      tags: false
+  - provider: script
+    skip_cleanup: true
+    script: make travis-release-deploy
+    on:
+      repo: redhat-cop/podpreset-webhook
+      branch: master
+      tags: true
+  - provider: script
+    skip_cleanup: true
+    script: make travis-dev-deploy DEV_TAG=$TRAVIS_COMMIT
+    on:
+      condition: $PUSH_LATEST_COMMIT = yes
+      all_branches: true

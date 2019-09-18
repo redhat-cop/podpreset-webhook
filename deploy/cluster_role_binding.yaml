@@ -1,0 +1,12 @@
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: podpreset-webhook
+subjects:
+  - kind: ServiceAccount
+    name: podpreset-webhook
+    namespace: podpreset-webhook
+roleRef:
+  kind: ClusterRole
+  name: podpreset-webhook
+  apiGroup: rbac.authorization.k8s.io
