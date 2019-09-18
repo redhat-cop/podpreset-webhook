@@ -1,5 +1,6 @@
-podpreset-webhook
-=================
+# podpreset-webhook
+
+[![Build Status](https://travis-ci.org/redhat-cop/podpreset-webhook.svg?branch=master)](https://travis-ci.org/redhat-cop/podpreset-webhook) [![Docker Repository on Quay](https://quay.io/repository/redhat-cop/podpreset-webhook/status "Docker Repository on Quay")](https://quay.io/repository/redhat-cop/podpreset-webhook)
 
 Implementation of Kubernetes [PodPreset](https://kubernetes.io/docs/concepts/workloads/pods/podpreset/) as an [Admission Webhook](https://kubernetes.io/docs/reference/access-authn-authz/extensible-admission-controllers/).
 
