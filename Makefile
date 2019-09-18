@@ -75,7 +75,7 @@ docker-push-release:  docker-tag-release
 
 # Build the docker image
 docker-build:
-	docker build . -t ${IMG}
+	docker build . -t ${IMG} -f build/Dockerfile
 
 # Push the docker image
 docker-push:
