@@ -151,7 +151,7 @@ func applyPodPresetsOnContainer(ctr *corev1.Container, podPresets []*papi.PodPre
 func filterPodPresets(list *papi.PodPresetList, pod *corev1.Pod) ([]*papi.PodPreset, error) {
 	var matchingPPs []*papi.PodPreset
 
-	for _, pp := range list.Items {
+	for i, pp := range list.Items {
 		selector, err := metav1.LabelSelectorAsSelector(&pp.Spec.Selector)
 		if err != nil {
 			return nil, fmt.Errorf("label selector conversion failed: %v for selector: %v", pp.Spec.Selector, err)
@@ -162,7 +162,7 @@ func filterPodPresets(list *papi.PodPresetList, pod *corev1.Pod) ([]*papi.PodPre
 			continue
 		}
 		log.Info("PodPreset matches pod labels", "PodPreset", pp.GetName(), "Pod", pod.GetName())
-		matchingPPs = append(matchingPPs, &pp)
+		matchingPPs = append(matchingPPs, &list.Items[i])
 	}
 	return matchingPPs, nil
 }
