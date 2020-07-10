@@ -72,7 +72,7 @@ func (p *PodPresetMutator) mutatePodsFn(ctx context.Context, pod *corev1.Pod) er
 
 	podPresetList := &papi.PodPresetList{}
 
-	err := p.client.List(context.TODO(), &client.ListOptions{Namespace: pod.Namespace}, podPresetList)
+	err := p.client.List(context.TODO(), &client.ListOptions{}, podPresetList)
 
 	if err != nil {
 		return fmt.Errorf("listing pod presets failed: %v", err)
