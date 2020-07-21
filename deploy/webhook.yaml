@@ -15,7 +15,7 @@ spec:
       serviceAccountName: podpreset-webhook
       containers:
         - name: podpreset-webhook
-          image: quay.io/redhat-cop/podpreset-webhook:latest
+          image: gcr.io/vb-datatransformation/podpreset-webhook:latest
           command:
             - podpreset-webhook
           imagePullPolicy: Always
