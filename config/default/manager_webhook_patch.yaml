@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: controller-manager
+  namespace: system
+spec:
+  template:
+    spec:
+      containers:
+        - name: manager
+          ports:
+            - containerPort: 9443
+              name: webhook-server
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /apiserver.local.config/certificates
+              name: apiservice-cert
+              readOnly: true
+      volumes:
+        - name: apiservice-cert
+          secret:
+            defaultMode: 420
+            secretName: webhook-server-cert
+            items:
+              - key: tls.key
+                path: apiserver.key
+              - key: tls.crt
+                path: apiserver.crt

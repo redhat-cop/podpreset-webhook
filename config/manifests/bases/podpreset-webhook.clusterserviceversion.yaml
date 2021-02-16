@@ -1,0 +1,52 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: '[]'
+    capabilities: Basic Install
+  name: podpreset-webhook.v0.0.0
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - description: PodPreset is the Schema for the podpresets API
+      displayName: Pod Preset
+      kind: PodPreset
+      name: podpresets.redhatcop.redhat.io
+      statusDescriptors:
+      - displayName: Conditions
+        path: conditions
+        x-descriptors:
+        - urn:alm:descriptor:io.kubernetes.conditions
+      version: v1alpha1
+  description: Implementation of Kubernetes PodPreset as an Admission Webhook.
+  displayName: PodPreset Webhook
+  icon:
+  - base64data: ""
+    mediatype: ""
+  install:
+    spec:
+      deployments: null
+    strategy: ""
+  installModes:
+  - supported: false
+    type: OwnNamespace
+  - supported: false
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - podpreset
+  links:
+  - name: Podpreset Webhook
+    url: https://podpreset-webhook.domain
+  maintainers:
+  - email: ablock@redhat.com'
+    name: '''Andrew Block'
+  maturity: alpha
+  provider:
+    name: Red Hat Community of Practice
+  version: 0.0.0
