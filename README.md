@@ -38,7 +38,7 @@ The following steps describe the various methods for which the solution can be d
 
 #### Deployment
 
-Execute the following command which will facilitate a deployment to a namespace calld `podpreset-webhook`
+Execute the following command which will facilitate a deployment to a namespace called `podpreset-webhook`
 
 ```shell
 make deploy IMG=quay.io/redhat-cop/podpreset-webhook:latest
@@ -48,16 +48,17 @@ make deploy IMG=quay.io/redhat-cop/podpreset-webhook:latest
 Utilize the following steps to demonstrate the functionality of the _PodPreset's_ in a cluster.
 
 1. Deploy any applications (as a _DeploymentConfig_ or _Deployment_)
-2. Label the resource
+
+2. Create the _PodPreset_
 
 ```
-kubectl patch dc/<name> -p '{"spec":{"template":{"metadata":{"labels":{"role":"frontend"}}}}}'
+kubectl apply -f apiVersion: redhatcop.redhat.io/v1alpha1
 ```
 
-4. Create the _PodPreset_
+3. Label the resource
 
 ```
-kubectl apply -f deploy/crds/redhatcop_v1alpha1_podpreset_cr.yaml
+kubectl patch deployment/<name> -p '{"spec":{"template":{"metadata":{"labels":{"role":"frontend"}}}}}'
 ```
 
 Verify any new pods have the environment variable `FOO=bar`
