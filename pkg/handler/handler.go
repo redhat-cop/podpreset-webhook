@@ -67,7 +67,7 @@ func (a *PodPresetMutator) Handle(ctx context.Context, req admission.Request) ad
 
 	podPresetList := &redhatcopv1alpha1.PodPresetList{}
 
-	err = a.Client.List(context.TODO(), podPresetList, &client.ListOptions{Namespace: pod.Namespace})
+	err = a.Client.List(context.TODO(), podPresetList, &client.ListOptions{Namespace: req.Namespace})
 
 	if err != nil {
 		return admission.Errored(http.StatusInternalServerError, fmt.Errorf("Error retrieving ist of PodPresets: %v", err))
