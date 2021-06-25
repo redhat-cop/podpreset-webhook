@@ -59,7 +59,6 @@ func (a *PodPresetMutator) Handle(ctx context.Context, req admission.Request) ad
 
 	// Ignore if exclusion annotation is present
 	if podAnnotations := pod.GetAnnotations(); podAnnotations != nil {
-		//klog.V(5).Infof("Looking at pod annotations, found: %v", podAnnotations)
 		if podAnnotations[corev1.PodPresetOptOutAnnotationKey] == "true" {
 			return admission.Allowed("Exclusion Annotation Present")
 		}

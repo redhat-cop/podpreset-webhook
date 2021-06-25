@@ -52,7 +52,7 @@ Utilize the following steps to demonstrate the functionality of the _PodPreset's
 2. Create the _PodPreset_
 
 ```
-kubectl apply -f apiVersion: redhatcop.redhat.io/v1alpha1
+kubectl apply -f config/samples/redhatcop_v1alpha1_podpreset.yaml
 ```
 
 3. Label the resource
