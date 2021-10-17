@@ -21,9 +21,6 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// EDIT THIS FILE!  THIS IS SCAFFOLDING FOR YOU TO OWN!
-// NOTE: json tags are required.  Any new fields you add must have json tags for the fields to be serialized.
-
 // PodPresetSpec defines the desired state of PodPreset
 type PodPresetSpec struct {
 	// +kubebuilder:validation:Required
@@ -63,6 +60,7 @@ type PodPresetStatus struct {
 
 // +kubebuilder:object:root=true
 // +kubebuilder:subresource:status
+// +kubebuilder:resource:path=podpresets,scope=Namespaced
 
 // PodPreset is the Schema for the podpresets API
 type PodPreset struct {

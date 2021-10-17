@@ -3,12 +3,17 @@ layout: go.kubebuilder.io/v3
 projectName: podpreset-webhook
 repo: github.com/redhat-cop/podpreset-webhook
 resources:
-- crdVersion: v1
+- api:
+    crdVersion: v1
+    namespaced: true
+  domain: redhat.io
   group: redhatcop
   kind: PodPreset
+  path: github.com/redhat-cop/podpreset-webhook/api/v1alpha1
   version: v1alpha1
-  webhookVersion: v1
-version: 3-alpha
+  webhooks:
+    webhookVersion: v1
+version: "3"
 plugins:
   manifests.sdk.operatorframework.io/v2: {}
   scorecard.sdk.operatorframework.io/v2: {}
