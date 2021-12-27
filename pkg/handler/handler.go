@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/go-logr/logr"
-	redhatcopv1alpha1 "github.com/redhat-cop/podpreset-webhook/api/v1alpha1"
+	redhatcopv1alpha1 "github.com/kamynina/podpreset-webhook/api/v1alpha1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
 	corev1 "k8s.io/api/core/v1"
@@ -383,12 +383,18 @@ func applyPodPresetsOnPod(pod *corev1.Pod, podPresets []*redhatcopv1alpha1.PodPr
 // given podPresets in to the given container. It ignores conflict errors
 // because it assumes those have been checked already by the caller.
 func applyPodPresetsOnContainer(ctr *corev1.Container, podPresets []*redhatcopv1alpha1.PodPreset) {
-	envVars, _ := mergeEnv(ctr.Env, podPresets)
-	ctr.Env = envVars
+	envVars, err := mergeEnv(ctr.Env, podPresets)
+	if err == nil {
+		ctr.Env = envVars
+	}
 
-	volumeMounts, _ := mergeVolumeMounts(ctr.VolumeMounts, podPresets)
-	ctr.VolumeMounts = volumeMounts
+	volumeMounts, err := mergeVolumeMounts(ctr.VolumeMounts, podPresets)
+	if err == nil {
+		ctr.VolumeMounts = volumeMounts
+	}
 
-	envFrom, _ := mergeEnvFrom(ctr.EnvFrom, podPresets)
-	ctr.EnvFrom = envFrom
+	envFrom, err := mergeEnvFrom(ctr.EnvFrom, podPresets)
+	if err == nil {
+		ctr.EnvFrom = envFrom
+	}
 }

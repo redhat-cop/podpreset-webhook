@@ -43,6 +43,60 @@ Execute the following command which will facilitate a deployment to a namespace 
 ```shell
 make deploy IMG=quay.io/redhat-cop/podpreset-webhook:latest
 ```
+
+#### Local Developing
+
+```shell
+minikube start
+# one time - install cert manager
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.6.1/cert-manager.yaml
+
+# one time generate dep.yaml and preset.yaml
+cat << EOF > dep.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.14.2
+        ports:
+        - containerPort: 80
+        env:
+        - name: DEMO_GREETING
+          value: "Hello from the environment"
+EOF
+cat << EOF > preset.yaml
+apiVersion: redhatcop.redhat.io/v1alpha1
+kind: PodPreset
+metadata:
+  name: frontend
+spec:
+  env:
+  - name: FOO1
+    value: bar
+  selector:
+    matchLabels:
+      role: frontend
+EOF
+
+# build binary and deploy
+export IMG=registry.mobbtech.com/cd/podpreset-webhook:latest && make docker-build IMG=$IMG && make docker-push IMG=$IMG &&  make deploy IMG=$IMG
+kubectl apply -f dep.yaml && kubectl patch deployment/nginx-deployment -p '{"spec":{"template":{"metadata":{"labels":{"role":"frontend"}}}}}'
+```
+
 ## Example Implementation
 
 Utilize the following steps to demonstrate the functionality of the _PodPreset's_ in a cluster.

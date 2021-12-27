@@ -1,4 +1,4 @@
-module github.com/redhat-cop/podpreset-webhook
+module github.com/kamynina/podpreset-webhook
 
 go 1.15
 

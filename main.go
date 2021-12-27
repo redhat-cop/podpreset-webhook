@@ -32,8 +32,8 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
 	"sigs.k8s.io/controller-runtime/pkg/webhook"
 
-	redhatcopv1alpha1 "github.com/redhat-cop/podpreset-webhook/api/v1alpha1"
-	"github.com/redhat-cop/podpreset-webhook/pkg/handler"
+	redhatcopv1alpha1 "github.com/kamynina/podpreset-webhook/api/v1alpha1"
+	"github.com/kamynina/podpreset-webhook/pkg/handler"
 	// +kubebuilder:scaffold:imports
 )
 
@@ -106,7 +106,7 @@ func main() {
 		os.Exit(1)
 	}
 
-	setupLog.Info("starting manager")
+	setupLog.Info("starting manager!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
 	if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
 		setupLog.Error(err, "problem running manager")
 		os.Exit(1)
