@@ -119,7 +119,7 @@ func (a *PodPresetMutator) InjectDecoder(d *admission.Decoder) error {
 func filterPodPresets(list redhatcopv1alpha1.PodPresetList, pod *corev1.Pod) ([]*redhatcopv1alpha1.PodPreset, error) {
 	var matchingPPs []*redhatcopv1alpha1.PodPreset
 
-	for _, pp := range list.Items {
+	for i, pp := range list.Items {
 		selector, err := metav1.LabelSelectorAsSelector(&pp.Spec.Selector)
 		if err != nil {
 			return nil, fmt.Errorf("label selector conversion failed: %v for selector: %v", pp.Spec.Selector, err)
@@ -129,7 +129,7 @@ func filterPodPresets(list redhatcopv1alpha1.PodPresetList, pod *corev1.Pod) ([]
 		if !selector.Matches(labels.Set(pod.Labels)) {
 			continue
 		}
-		matchingPPs = append(matchingPPs, &pp)
+		matchingPPs = append(matchingPPs, &list.Items[i])
 	}
 	return matchingPPs, nil
 }
