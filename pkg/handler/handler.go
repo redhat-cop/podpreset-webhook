@@ -165,7 +165,7 @@ func safeToApplyPodPresetsOnContainer(ctr *corev1.Container, podPresets []*redha
 }
 
 // mergeEnv merges a list of env vars with the env vars injected by given list podPresets.
-// It returns an error if it detects any conflict during the merge.
+// If a variable already exists in the original (pod's) env, the original value is retained.
 func mergeEnv(envVars []corev1.EnvVar, podPresets []*redhatcopv1alpha1.PodPreset) ([]corev1.EnvVar, error) {
 	origEnv := map[string]corev1.EnvVar{}
 	for _, v := range envVars {
@@ -175,6 +175,7 @@ func mergeEnv(envVars []corev1.EnvVar, podPresets []*redhatcopv1alpha1.PodPreset
 	mergedEnv := make([]corev1.EnvVar, len(envVars))
 	copy(mergedEnv, envVars)
 
+	// error handling currently not used, left in the code for future enhancement and minimun changes
 	var errs []error
 
 	for _, pp := range podPresets {
@@ -185,12 +186,33 @@ func mergeEnv(envVars []corev1.EnvVar, podPresets []*redhatcopv1alpha1.PodPreset
 				// if we don't already have it append it and continue
 				origEnv[v.Name] = v
 				mergedEnv = append(mergedEnv, v)
-				continue
-			}
+			} else {
+				// that var is already set - but that only needs further handling of the values differ
+				if !reflect.DeepEqual(found, v) {
 
-			// make sure they are identical or throw an error
-			if !reflect.DeepEqual(found, v) {
-				errs = append(errs, fmt.Errorf("merging env for %s has a conflict on %s: \n%#v\ndoes not match\n%#v\n in container", pp.GetName(), v.Name, v, found))
+					// should read this from the pod
+					// conflictResolution := pp.Spec.conflictResolution
+					conflictResolution := "keepContainerVarValue"
+
+					if conflictResolution == "overwriteContainerVarValue" {
+						// the container's env var is overwritten with the PodPreset's value
+						for i := 0; i < len(mergedEnv); i++ {
+							if mergedEnv[i].Name == v.Name {
+								mergedEnv[i] = v
+								continue
+							}
+						}
+						// might log an info
+
+					} else if conflictResolution == "fail" {
+						// the container's env var is retained
+						// should log a warning
+
+					} else {
+						// default action is "keepContainerValue"
+						// might log an info
+					}
+				}
 			}
 		}
 	}
