@@ -183,11 +183,14 @@ func mergeEnv(envVars []corev1.EnvVar, podPresets []*redhatcopv1alpha1.PodPreset
 
 			found, ok := origEnv[v.Name]
 			if !ok {
-				// if we don't already have it append it and continue
-				origEnv[v.Name] = v
+				// since we don't already have it, append it
 				mergedEnv = append(mergedEnv, v)
+
+				// also update the copy of the original container's variables, so that further outer
+				// loops (for additional PodPresets) will compare against the already updated value.
+				origEnv[v.Name] = v
 			} else {
-				// that var is already set - but that only needs further handling of the values differ
+				// that var is already set - but that only needs further handling if the values differ
 				if !reflect.DeepEqual(found, v) {
 
 					// should read this from the pod
@@ -197,8 +200,14 @@ func mergeEnv(envVars []corev1.EnvVar, podPresets []*redhatcopv1alpha1.PodPreset
 					if conflictResolution == "overwriteContainerVarValue" {
 						// the container's env var is overwritten with the PodPreset's value
 						for i := 0; i < len(mergedEnv); i++ {
+							// it's an array, no map - we need to iterate
 							if mergedEnv[i].Name == v.Name {
+								// since the variable already exists, update it.
 								mergedEnv[i] = v
+
+								// also update the copy of the original container's variables, so that further outer
+								// loops (for additional PodPresets) will compare against the already updated value.
+								origEnv[v.Name] = v
 								continue
 							}
 						}
